@@ -21,22 +21,24 @@ import ru.iteco.fmhandroid.data.DataHelper;
 
 public class AuthorizationPage extends DataHelper {
 
-    public static ViewInteraction loginField = onView(withId(R.id.login_text_input_layout));
-    public static ViewInteraction loginFieldAsTextField = onView(allOf(supportsInputMethods(), isDescendantOfA(withId(R.id.login_text_input_layout))));
+    public ViewInteraction loginField;
+    public ViewInteraction loginFieldAsTextField;
+    public ViewInteraction passwordField;
+    public ViewInteraction passwordFieldAsTextField;
+    public ViewInteraction loginButton;
+    public ViewInteraction AuthorizationText;
+
+    public AuthorizationPage() {
+        loginField = onView(withId(R.id.login_text_input_layout));
+        loginFieldAsTextField = onView(allOf(supportsInputMethods(), isDescendantOfA(withId(R.id.login_text_input_layout))));
+        passwordField = onView(withId(R.id.password_text_input_layout));
+        passwordFieldAsTextField = onView(allOf(supportsInputMethods(), isDescendantOfA(withId(R.id.password_text_input_layout))));
+        loginButton = onView(withId(R.id.enter_button));
+        AuthorizationText = onView(withText("Authorization"));
+    }
 
 
-    public static ViewInteraction passwordField = onView(withId(R.id.password_text_input_layout));
-    public static ViewInteraction passwordFieldAsTextField = onView(allOf(supportsInputMethods(), isDescendantOfA(withId(R.id.password_text_input_layout))));
-
-
-    public static ViewInteraction loginButton = onView(withId(R.id.enter_button));
-
-
-    public static ViewInteraction AuthorizationText = onView(withText("Authorization"));
-
-
-
-    public static void errorMessageText(String text, View decorView) {
+    public void errorMessageText(String text, View decorView) {
         onView(withText(text))
                 .inRoot(withDecorView(not(decorView)))
                 .check(matches(isDisplayed()));

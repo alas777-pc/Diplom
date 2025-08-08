@@ -13,28 +13,29 @@ import ru.iteco.fmhandroid.R;
 import ru.iteco.fmhandroid.data.DataHelper;
 
 public class AppBarPage extends DataHelper {
+    public ViewInteraction navigationButton;
+    public ViewInteraction navigationNews;
+    public ViewInteraction navigationAbout;
+    public ViewInteraction navigationMain;
+    public ViewInteraction loveIsAllBtn;
+    public ViewInteraction exitBtn;
+    public ViewInteraction logOut;
 
-    public static ViewInteraction navigationButton = onView(withId(R.id.main_menu_image_button));
+    public AppBarPage() {
+        navigationButton = onView(withId(R.id.main_menu_image_button));
+        navigationNews = onView(allOf(withId(android.R.id.title),
+                withText("News")));
+        navigationAbout = onView(allOf(withId(android.R.id.title),
+                withText("About")));
+        navigationMain = onView(allOf(withId(android.R.id.title),
+                withText("Main")));
+        loveIsAllBtn = onView(
+                allOf(withId(R.id.our_mission_image_button), withContentDescription("Our Mission")));
+        exitBtn = onView(withId(R.id.authorization_image_button));
+        logOut = onView(allOf(withId(android.R.id.title), withText("Log out")));
 
 
-    public static ViewInteraction navigationNews = onView(allOf(withId(android.R.id.title),
-            withText("News")));
+    }
 
 
-    public static ViewInteraction navigationAbout = onView(allOf(withId(android.R.id.title),
-            withText("About")));
-
-
-    public static ViewInteraction navigationMain = onView(allOf(withId(android.R.id.title),
-            withText("Main")));
-
-
-    public static ViewInteraction loveIsAllBtn = onView(
-            allOf(withId(R.id.our_mission_image_button), withContentDescription("Our Mission")));
-
-
-    public static ViewInteraction exitBtn = onView(withId(R.id.authorization_image_button));
-
-
-    public static ViewInteraction logOut = onView(allOf(withId(android.R.id.title), withText("Log out")));
 }

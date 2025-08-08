@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import io.qameta.allure.android.runners.AllureAndroidJUnit4;
+import io.qameta.allure.kotlin.Epic;
 import io.qameta.allure.kotlin.Story;
 import ru.iteco.fmhandroid.data.DataHelper;
 import ru.iteco.fmhandroid.elements.AboutPage;
@@ -25,7 +26,14 @@ import ru.iteco.fmhandroid.ui.AppActivity;
 
 @LargeTest
 @RunWith(AllureAndroidJUnit4.class)
+@Epic("Тестирование вкладки 'About'")
 public class AboutTest extends DataHelper {
+    AuthorizationSteps authorizationSteps = new AuthorizationSteps();
+    AboutStep aboutStep = new AboutStep();
+
+    AboutPage aboutPage = new AboutPage();
+    AppBarStep appBarStep = new AppBarStep();
+    MainStep mainStep = new MainStep();
 
     @Rule
     public ActivityScenarioRule<AppActivity> activityScenarioRule =
@@ -34,22 +42,23 @@ public class AboutTest extends DataHelper {
     @Before
     public void loginAuth() {
         try {
-            MainStep.checkNewsTitle();
+            mainStep.checkNewsTitle();
         } catch (androidx.test.espresso.PerformException e) {
-            AuthorizationSteps.loginFieldInput(validLogin);
-            AuthorizationSteps.passwordFieldInput(validPassword);
-            AuthorizationSteps.clickLoginBtn();
+            authorizationSteps.loginFieldInput(validLogin);
+            authorizationSteps.passwordFieldInput(validPassword);
+            authorizationSteps.clickLoginBtn();
         }
-        MainStep.checkNewsTitle();
-        AppBarStep.clickNavigationBtn();
-        AppBarStep.clickNavigationAbout();
-        AboutStep.checkVersionTitle();
+        mainStep.checkNewsTitle();
+        appBarStep.clickNavigationBtn();
+        appBarStep.clickNavigationAbout();
+        aboutStep.checkVersionTitle();
     }
+
     @Test
     @Story("Переход по ссылке Политика конфедециальности (ID 60)")
     public void shouldGoToPrivacyPolicy() {
         Intents.init();
-        AboutPage.textPrivacyPolicyLink.perform(click());
+        aboutPage.getTextPrivacyPolicyLink.perform(click());
         intended(hasData("https://vhospice.org/#/privacy-policy/"));
         Intents.release();
     }
@@ -58,7 +67,7 @@ public class AboutTest extends DataHelper {
     @Story("Переход по ссылке Правила использования (ID 59)")
     public void shouldGoToTermsOfUse() {
         Intents.init();
-        AboutPage.textTermsOfUseLink.perform(click());
+        aboutPage.getTextTermsOfUseLink.perform(click());
         intended(hasData("https://vhospice.org/#/terms-of-use"));
         Intents.release();
     }

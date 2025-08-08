@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import io.qameta.allure.android.runners.AllureAndroidJUnit4;
+import io.qameta.allure.kotlin.Epic;
 import io.qameta.allure.kotlin.Story;
 import ru.iteco.fmhandroid.data.DataHelper;
 import ru.iteco.fmhandroid.steps.AuthorizationSteps;
@@ -18,8 +19,12 @@ import ru.iteco.fmhandroid.ui.AppActivity;
 
 @LargeTest
 @RunWith(AllureAndroidJUnit4.class)
+@Epic("Тестирование вкладки 'Main'")
 
 public class MainTest extends DataHelper {
+    MainStep mainStep = new MainStep();
+    AuthorizationSteps authorizationSteps = new AuthorizationSteps();
+    NewsStep newsStep = new NewsStep();
 
     @Rule
     public ActivityScenarioRule<AppActivity> mActivityScenarioRule =
@@ -28,25 +33,26 @@ public class MainTest extends DataHelper {
     @Before
     public void loginAuth() {
         try {
-            MainStep.checkNewsTitle();
+            mainStep.checkNewsTitle();
         } catch (androidx.test.espresso.PerformException e) {
-            AuthorizationSteps.loginFieldInput(validLogin);
-            AuthorizationSteps.passwordFieldInput(validPassword);
-            AuthorizationSteps.clickLoginBtn();
+            authorizationSteps.loginFieldInput(validLogin);
+            authorizationSteps.passwordFieldInput(validPassword);
+            authorizationSteps.clickLoginBtn();
         }
     }
+
     @Test
     @Story("Свернуть/развернуть раздел новостей (ID 19)")
     public void ShouldCloseAndOpenNewsFeed() {
-        MainStep.clickOpenNewsBtn();
-        MainStep.clickOpenNewsBtn();
-        MainStep.checkAllNewsText();
+        mainStep.clickOpenNewsBtn();
+        mainStep.clickOpenNewsBtn();
+        mainStep.checkAllNewsText();
     }
 
     @Test
     @Story("Переход к странице с новостями (ID 20)")
     public void ShouldGoToNews() {
-        MainStep.clickAllNewsText();
-        NewsStep.checkNewsPageTitle();
+        mainStep.clickAllNewsText();
+        newsStep.checkNewsPageTitle();
     }
 }

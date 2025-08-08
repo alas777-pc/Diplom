@@ -4,62 +4,66 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static ru.iteco.fmhandroid.data.WaitId.waitUntilElement;
-import static ru.iteco.fmhandroid.elements.AppBarPage.exitBtn;
-import static ru.iteco.fmhandroid.elements.AppBarPage.logOut;
-import static ru.iteco.fmhandroid.elements.AppBarPage.loveIsAllBtn;
-import static ru.iteco.fmhandroid.elements.AppBarPage.navigationAbout;
-import static ru.iteco.fmhandroid.elements.AppBarPage.navigationButton;
-
-import static ru.iteco.fmhandroid.elements.AppBarPage.navigationNews;
-import static ru.iteco.fmhandroid.elements.LoveIsAllPage.loveIsAllText;
 
 
+import io.qameta.allure.kotlin.Allure;
 import ru.iteco.fmhandroid.R;
 import ru.iteco.fmhandroid.data.DataHelper;
+import ru.iteco.fmhandroid.data.WaitId;
+import ru.iteco.fmhandroid.elements.AppBarPage;
+import ru.iteco.fmhandroid.elements.LoveIsAllPage;
 
 public class AppBarStep extends DataHelper {
+    AppBarPage appBarPage = new AppBarPage();
+    LoveIsAllPage loveIsAllPage = new LoveIsAllPage();
+    WaitId waitId = new WaitId();
 
-    public static void clickNavigationBtn() {
-        waitUntilElement(R.id.custom_app_bar_title_text_view);
-        navigationButton.check(matches(isDisplayed()));
-        navigationButton.perform(click());
+    public void clickNavigationBtn() {
+        Allure.step("Нажатие на иконку 'бургер'");
+        waitId.waitUntilElement(R.id.custom_app_bar_title_text_view);
+        appBarPage.navigationButton.check(matches(isDisplayed()));
+        appBarPage.navigationButton.perform(click());
     }
 
 
-    public static void clickNavigationNews() {
-        waitUntilElement(android.R.id.title);
-        navigationNews.check(matches(isDisplayed()));
-        navigationNews.perform(click());
+    public void clickNavigationNews() {
+        Allure.step("Нажатие на 'News' в навигационном меню");
+        waitId.waitUntilElement(android.R.id.title);
+        appBarPage.navigationNews.check(matches(isDisplayed()));
+        appBarPage.navigationNews.perform(click());
     }
 
 
-    public static void clickNavigationAbout() {
-        waitUntilElement(android.R.id.title);
-        navigationAbout.check(matches(isDisplayed()));
-        navigationAbout.perform(click());
+    public void clickNavigationAbout() {
+        Allure.step("Нажатие на 'About' в навигационном меню");
+        waitId.waitUntilElement(android.R.id.title);
+        appBarPage.navigationAbout.check(matches(isDisplayed()));
+        appBarPage.navigationAbout.perform(click());
     }
 
 
-    public static void clickLoveIsAllBtn() {
-        waitUntilElement(R.id.our_mission_image_button);
-        loveIsAllBtn.check(matches(isDisplayed()));
-        loveIsAllBtn.perform(click());
+    public void clickLoveIsAllBtn() {
+        Allure.step("Нажатие на иконку 'бабочка'");
+        waitId.waitUntilElement(R.id.our_mission_image_button);
+        appBarPage.loveIsAllBtn.check(matches(isDisplayed()));
+        appBarPage.loveIsAllBtn.perform(click());
     }
 
 
-    public static void checkLoveIsAllBtn() {
-        waitUntilElement(R.id.our_mission_title_text_view);
-        loveIsAllText.check(matches(isDisplayed()));
-        loveIsAllText.check(matches(withText(loveTitle)));
+    public void checkLoveIsAllBtn() {
+        Allure.step("Проверка отображения заголовка 'Love is all'");
+        waitId.waitUntilElement(R.id.our_mission_title_text_view);
+        loveIsAllPage.loveIsAllText.check(matches(isDisplayed()));
+        loveIsAllPage.loveIsAllText.check(matches(withText(loveTitle)));
     }
 
 
-    public static void exit() {
-        waitUntilElement(R.id.authorization_image_button);
-        exitBtn.check(matches(isDisplayed()));
-        exitBtn.perform(click());
-        waitUntilElement(android.R.id.title);
-        logOut.perform(click());
+    public void exit() {
+        Allure.step("Выход из приложения");
+        waitId.waitUntilElement(R.id.authorization_image_button);
+        appBarPage.exitBtn.check(matches(isDisplayed()));
+        appBarPage.exitBtn.perform(click());
+        waitId.waitUntilElement(android.R.id.title);
+        appBarPage.logOut.perform(click());
     }
 }

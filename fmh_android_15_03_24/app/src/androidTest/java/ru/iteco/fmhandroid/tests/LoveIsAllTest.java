@@ -3,7 +3,6 @@ package ru.iteco.fmhandroid.tests;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static org.hamcrest.core.IsNot.not;
-import static ru.iteco.fmhandroid.data.WaitId.waitUntilElement;
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.filters.LargeTest;
@@ -14,9 +13,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import io.qameta.allure.android.runners.AllureAndroidJUnit4;
+import io.qameta.allure.kotlin.Epic;
 import io.qameta.allure.kotlin.Story;
 import ru.iteco.fmhandroid.R;
 import ru.iteco.fmhandroid.data.DataHelper;
+import ru.iteco.fmhandroid.data.WaitId;
 import ru.iteco.fmhandroid.elements.LoveIsAllPage;
 import ru.iteco.fmhandroid.steps.AppBarStep;
 import ru.iteco.fmhandroid.steps.AuthorizationSteps;
@@ -25,7 +26,13 @@ import ru.iteco.fmhandroid.ui.AppActivity;
 
 @LargeTest
 @RunWith(AllureAndroidJUnit4.class)
+@Epic("Тестирование вкладки 'LoveIsAll'")
 public class LoveIsAllTest extends DataHelper {
+    AuthorizationSteps authorizationSteps = new AuthorizationSteps();
+    AppBarStep appBarStep = new AppBarStep();
+    LoveIsAllPage loveIsAllPage = new LoveIsAllPage();
+    MainStep mainStep = new MainStep();
+    WaitId waitId = new WaitId();
     @Rule
     public ActivityScenarioRule<AppActivity> activityScenarioRule =
             new ActivityScenarioRule<>(AppActivity.class);
@@ -33,25 +40,25 @@ public class LoveIsAllTest extends DataHelper {
     @Before
     public void loginAuth() {
         try {
-            MainStep.checkNewsTitle();
+            mainStep.checkNewsTitle();
         } catch (androidx.test.espresso.PerformException e) {
-            AuthorizationSteps.loginFieldInput(validLogin);
-            AuthorizationSteps.passwordFieldInput(validPassword);
-            AuthorizationSteps.clickLoginBtn();
+            authorizationSteps.loginFieldInput(validLogin);
+            authorizationSteps.passwordFieldInput(validPassword);
+            authorizationSteps.clickLoginBtn();
         }
-        MainStep.checkNewsTitle();
-        AppBarStep.clickLoveIsAllBtn();
-        AppBarStep.checkLoveIsAllBtn();
+        mainStep.checkNewsTitle();
+        appBarStep.clickLoveIsAllBtn();
+        appBarStep.checkLoveIsAllBtn();
     }
 
 
     @Test
     @Story("Разворачивание цитат (ID 57)")
     public void ShouldOpenDescription() {
-        waitUntilElement(R.id.our_mission_item_list_recycler_view);
-        LoveIsAllPage.clickOnQuote(num);
-        waitUntilElement(R.id.our_mission_item_description_text_view);
-        LoveIsAllPage.openDiscription(num).check(matches(isDisplayed()));
+        waitId.waitUntilElement(R.id.our_mission_item_list_recycler_view);
+        loveIsAllPage.clickOnQuote(num);
+        waitId.waitUntilElement(R.id.our_mission_item_description_text_view);
+        loveIsAllPage.openDiscription(num).check(matches(isDisplayed()));
     }
 
     @Test
@@ -59,10 +66,10 @@ public class LoveIsAllTest extends DataHelper {
     public void ShouldCloseDescription() {
         ShouldOpenDescription();
 
-        waitUntilElement(R.id.our_mission_item_list_recycler_view);
-        LoveIsAllPage.clickOnQuote(num);
-        waitUntilElement(R.id.our_mission_item_description_text_view);
-        LoveIsAllPage.openDiscription(num).check(matches(not(isDisplayed())));
+        waitId.waitUntilElement(R.id.our_mission_item_list_recycler_view);
+        loveIsAllPage.clickOnQuote(num);
+        waitId.waitUntilElement(R.id.our_mission_item_description_text_view);
+        loveIsAllPage.openDiscription(num).check(matches(not(isDisplayed())));
     }
 
 }

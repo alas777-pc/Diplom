@@ -20,22 +20,25 @@ import org.hamcrest.TypeSafeMatcher;
 import ru.iteco.fmhandroid.R;
 
 public class LoveIsAllPage {
+    public ViewInteraction loveIsAllText;
+    public ViewInteraction recyclerView;
 
-    public static ViewInteraction loveIsAllText = onView(
-            allOf(withId(R.id.our_mission_title_text_view), withText("Love is all")));
+    public LoveIsAllPage() {
+        loveIsAllText = onView(
+                allOf(withId(R.id.our_mission_title_text_view), withText("Love is all")));
+        recyclerView = onView(withId(R.id.our_mission_item_list_recycler_view));
+
+    }
 
 
-    public static ViewInteraction recyclerView = onView(withId(R.id.our_mission_item_list_recycler_view));
-
-
-    public static ViewInteraction openDiscription(int num) {
+    public ViewInteraction openDiscription(int num) {
         int number = num - 1;
         return onView(allOf(withId(R.id.our_mission_item_description_text_view),
                 withParent(withParent(childAtPosition(withId(R.id.our_mission_item_list_recycler_view), number)))));
     }
 
 
-    public static void clickOnQuote(int num) {
+    public void clickOnQuote(int num) {
         int number = num - 1;
         onView(childAtPosition(withId(R.id.our_mission_item_list_recycler_view), number)).perform(click());
     }
