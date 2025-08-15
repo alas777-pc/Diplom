@@ -4,6 +4,8 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static org.hamcrest.core.IsNot.not;
 
+import static ru.iteco.fmhandroid.data.WaitId.waitUntilElement;
+
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.filters.LargeTest;
 
@@ -15,9 +17,7 @@ import org.junit.runner.RunWith;
 import io.qameta.allure.android.runners.AllureAndroidJUnit4;
 import io.qameta.allure.kotlin.Epic;
 import io.qameta.allure.kotlin.Story;
-import ru.iteco.fmhandroid.R;
 import ru.iteco.fmhandroid.data.DataHelper;
-import ru.iteco.fmhandroid.data.WaitId;
 import ru.iteco.fmhandroid.elements.LoveIsAllPage;
 import ru.iteco.fmhandroid.steps.AppBarStep;
 import ru.iteco.fmhandroid.steps.AuthorizationSteps;
@@ -32,7 +32,7 @@ public class LoveIsAllTest extends DataHelper {
     AppBarStep appBarStep = new AppBarStep();
     LoveIsAllPage loveIsAllPage = new LoveIsAllPage();
     MainStep mainStep = new MainStep();
-    WaitId waitId = new WaitId();
+
     @Rule
     public ActivityScenarioRule<AppActivity> activityScenarioRule =
             new ActivityScenarioRule<>(AppActivity.class);
@@ -55,9 +55,9 @@ public class LoveIsAllTest extends DataHelper {
     @Test
     @Story("Разворачивание цитат (ID 57)")
     public void ShouldOpenDescription() {
-        waitId.waitUntilElement(R.id.our_mission_item_list_recycler_view);
+        waitUntilElement(loveIsAllPage.missionList);
         loveIsAllPage.clickOnQuote(num);
-        waitId.waitUntilElement(R.id.our_mission_item_description_text_view);
+        waitUntilElement(loveIsAllPage.missionDiscription);
         loveIsAllPage.openDiscription(num).check(matches(isDisplayed()));
     }
 
@@ -66,9 +66,9 @@ public class LoveIsAllTest extends DataHelper {
     public void ShouldCloseDescription() {
         ShouldOpenDescription();
 
-        waitId.waitUntilElement(R.id.our_mission_item_list_recycler_view);
+        waitUntilElement(loveIsAllPage.missionList);
         loveIsAllPage.clickOnQuote(num);
-        waitId.waitUntilElement(R.id.our_mission_item_description_text_view);
+        waitUntilElement(loveIsAllPage.missionDiscription);
         loveIsAllPage.openDiscription(num).check(matches(not(isDisplayed())));
     }
 

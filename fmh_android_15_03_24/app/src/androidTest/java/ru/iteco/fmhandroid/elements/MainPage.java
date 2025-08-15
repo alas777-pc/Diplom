@@ -15,6 +15,9 @@ public class MainPage {
     public ViewInteraction allNewsText;
     public ViewInteraction allNewsBtn;
     public ViewInteraction newsFeedTitle;
+    public int materialButton;
+    public int allNews;
+    public int containerList;
 
     public MainPage() {
         openNewsBtn = onView(withId(R.id.expand_material_button));
@@ -23,6 +26,9 @@ public class MainPage {
         allNewsBtn = onView(
                 allOf(withId(R.id.all_news_text_view), withText("ALL NEWS")));
         newsFeedTitle = onView(withId(R.id.container_list_news_include_on_fragment_main));
+        materialButton = R.id.expand_material_button;
+        allNews = R.id.all_news_text_view;
+        containerList = R.id.container_list_news_include_on_fragment_main;
 
 
     }

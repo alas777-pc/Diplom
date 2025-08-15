@@ -15,9 +15,7 @@ import org.junit.runner.RunWith;
 import io.qameta.allure.android.runners.AllureAndroidJUnit4;
 import io.qameta.allure.kotlin.Epic;
 import io.qameta.allure.kotlin.Story;
-import ru.iteco.fmhandroid.R;
 import ru.iteco.fmhandroid.data.DataHelper;
-import ru.iteco.fmhandroid.data.WaitId;
 import ru.iteco.fmhandroid.elements.AppBarPage;
 import ru.iteco.fmhandroid.elements.AuthorizationPage;
 import ru.iteco.fmhandroid.steps.AppBarStep;
@@ -28,6 +26,7 @@ import ru.iteco.fmhandroid.ui.AppActivity;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static ru.iteco.fmhandroid.data.WaitId.waitUntilElement;
 
 @LargeTest
 @RunWith(AllureAndroidJUnit4.class)
@@ -37,7 +36,7 @@ public class AuthorizationTest extends DataHelper {
     AuthorizationSteps authorizationSteps = new AuthorizationSteps();
     AuthorizationPage authorizationPage = new AuthorizationPage();
     AppBarPage appBarPage = new AppBarPage();
-    WaitId waitId = new WaitId();
+
     AppBarStep appBarStep = new AppBarStep();
     MainStep mainStep = new MainStep();
     private View decorView;
@@ -60,13 +59,13 @@ public class AuthorizationTest extends DataHelper {
     public void loginOut() {
         try {
 
-            waitId.waitUntilElement(R.id.nav_host_fragment);
+            waitUntilElement(authorizationPage.hostFragment);
             authorizationPage.AuthorizationText.check(matches(isDisplayed()));
         } catch (androidx.test.espresso.NoMatchingViewException e) {
-            waitId.waitUntilElement(R.id.authorization_image_button);
+            waitUntilElement(authorizationPage.imageButton);
             appBarPage.exitBtn.check(matches(isDisplayed()));
             appBarPage.exitBtn.perform(click());
-            waitId.waitUntilElement(android.R.id.title);
+            waitUntilElement(authorizationPage.titleElement);
             appBarPage.logOut.perform(click());
         }
     }

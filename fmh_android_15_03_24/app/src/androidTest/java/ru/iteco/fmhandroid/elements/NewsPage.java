@@ -12,17 +12,14 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
+import static ru.iteco.fmhandroid.steps.NewsStep.childAtPosition;
+import static ru.iteco.fmhandroid.steps.NewsStep.first;
+
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
+
 
 import androidx.test.espresso.ViewInteraction;
-import androidx.test.espresso.matcher.RootMatchers;
 
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsInstanceOf;
 
 import ru.iteco.fmhandroid.R;
@@ -63,6 +60,16 @@ public class NewsPage {
     public ViewInteraction CreatingNewsBtn;
     public ViewInteraction CreatingNewsTitle;
     public ViewInteraction textInputEditText;
+    public int containerInclude;
+    public int newsCategoty;
+    public int newsMaterialButton;
+    public int newsMaterialCard;
+    public int deleteNews;
+    public int newsItemDescription;
+    public int newsListRecycler;
+    public int newsItemDescriptionText;
+    public int addNewsImage;
+    public int newsItemTitle;
 
     public NewsPage() {
 
@@ -203,81 +210,29 @@ public class NewsPage {
 
         textInputEditText = onView(
                 allOf(withId(R.id.news_item_title_text_input_edit_text)));
+
+        containerInclude = R.id.container_list_news_include;
+
+        newsCategoty = R.id.news_item_category_text_auto_complete_text_view;
+
+        newsMaterialButton = R.id.edit_news_material_button;
+
+        newsMaterialCard = R.id.news_item_material_card_view;
+
+        deleteNews = R.id.delete_news_item_image_view;
+
+        newsItemDescription = R.id.news_item_description_text_input_edit_text;
+
+        newsListRecycler = R.id.news_list_recycler_view;
+
+        newsItemDescriptionText = R.id.news_item_description_text_view;
+
+        addNewsImage = R.id.add_news_image_view;
+
+        newsItemTitle = R.id.news_item_title_text_view;
+
     }
 
 
-    public static void NewsBox(int number) {
-        int num = number - 1;
-        onView(childAtPosition(withId(R.id.news_list_recycler_view), num)).perform(click());
-    }
 
-
-    public static ViewInteraction openDiscription(int number) {
-        int num = number - 1;
-        return onView(
-                allOf(withId(R.id.news_item_description_text_view),
-                        withParent(withParent(childAtPosition(withId(R.id.news_list_recycler_view), num)))));
-    }
-
-    public static void SelectCategoryFromList(String category) {
-        onView(withText(category))
-                .inRoot(RootMatchers
-                        .isPlatformPopup())
-                .perform(click());
-    }
-
-    public static String CPNewsCardTitle() {
-        String firstCardTitle = onView(first(
-                allOf(withId(R.id.news_item_title_text_view),
-                        withParent(withParent(withId(R.id.news_item_material_card_view)))))).toString();
-        return firstCardTitle;
-    }
-
-    public static void NewCPTitleNews(String text) {
-        onView(allOf(
-                (withId(R.id.news_item_title_text_view)), withText(text))).check(matches(withText(text)));
-    }
-
-
-    private static Matcher<View> childAtPosition(
-            final Matcher<View> parentMatcher, final int position) {
-
-        return new TypeSafeMatcher<View>() {
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("Child at position " + position + " in parent ");
-                parentMatcher.describeTo(description);
-            }
-
-            @Override
-            public boolean matchesSafely(View view) {
-                ViewParent parent = view.getParent();
-                return parent instanceof ViewGroup && parentMatcher.matches(parent)
-                        && view.equals(((ViewGroup) parent).getChildAt(position));
-            }
-
-
-        };
-    }
-
-
-    private static <T> Matcher<T> first(final Matcher<T> matcher) {
-        return new BaseMatcher<T>() {
-            boolean isFirst = true;
-
-            @Override
-            public boolean matches(final Object item) {
-                if (isFirst && matcher.matches(item)) {
-                    isFirst = false;
-                    return true;
-                }
-                return false;
-            }
-
-            @Override
-            public void describeTo(final Description description) {
-                description.appendText("should return first matching item");
-            }
-        };
-    }
 }

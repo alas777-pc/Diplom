@@ -27,6 +27,11 @@ public class AuthorizationPage extends DataHelper {
     public ViewInteraction passwordFieldAsTextField;
     public ViewInteraction loginButton;
     public ViewInteraction AuthorizationText;
+    public int loginLayout;
+    public int hostFragment;
+    public int imageButton;
+    public int titleElement;
+
 
     public AuthorizationPage() {
         loginField = onView(withId(R.id.login_text_input_layout));
@@ -35,7 +40,12 @@ public class AuthorizationPage extends DataHelper {
         passwordFieldAsTextField = onView(allOf(supportsInputMethods(), isDescendantOfA(withId(R.id.password_text_input_layout))));
         loginButton = onView(withId(R.id.enter_button));
         AuthorizationText = onView(withText("Authorization"));
+        loginLayout = R.id.login_text_input_layout;
+        hostFragment = R.id.nav_host_fragment;
+        imageButton = R.id.authorization_image_button;
+        titleElement = android.R.id.title;
     }
+
 
 
     public void errorMessageText(String text, View decorView) {
@@ -43,6 +53,7 @@ public class AuthorizationPage extends DataHelper {
                 .inRoot(withDecorView(not(decorView)))
                 .check(matches(isDisplayed()));
     }
+
 }
 
 

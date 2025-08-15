@@ -6,19 +6,18 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 
+import static ru.iteco.fmhandroid.data.WaitId.waitUntilElement;
+
 import io.qameta.allure.kotlin.Allure;
-import ru.iteco.fmhandroid.R;
 import ru.iteco.fmhandroid.data.DataHelper;
-import ru.iteco.fmhandroid.data.WaitId;
 import ru.iteco.fmhandroid.elements.MainPage;
 
 public class MainStep extends DataHelper {
     MainPage mainPage = new MainPage();
-    WaitId waitId = new WaitId();
 
     public void clickOpenNewsBtn() {
         Allure.step("Сворачивание/разворачивание ленты новостей");
-        waitId.waitUntilElement(R.id.expand_material_button);
+        waitUntilElement(mainPage.materialButton);
         mainPage.openNewsBtn.check(matches(isDisplayed()));
         mainPage.openNewsBtn.perform(click());
     }
@@ -26,7 +25,7 @@ public class MainStep extends DataHelper {
 
     public void checkAllNewsText() {
         Allure.step("Проверка отображения 'All news'");
-        waitId.waitUntilElement(R.id.all_news_text_view);
+        waitUntilElement(mainPage.allNews);
         mainPage.allNewsText.check(matches(isDisplayed()));
         mainPage.allNewsText.check(matches(withText(allNewsTitle)));
     }
@@ -34,7 +33,7 @@ public class MainStep extends DataHelper {
 
     public void clickAllNewsText() {
         Allure.step("Переход на страницу новостей через 'All news'");
-        waitId.waitUntilElement(R.id.all_news_text_view);
+        waitUntilElement(mainPage.allNews);
         mainPage.allNewsBtn.check(matches(isDisplayed()));
         mainPage.allNewsBtn.perform(click());
     }
@@ -42,7 +41,7 @@ public class MainStep extends DataHelper {
 
     public void checkNewsTitle() {
         Allure.step("Проверка заголовка на главной странице");
-        waitId.waitUntilElement(R.id.container_list_news_include_on_fragment_main);
+        waitUntilElement(mainPage.containerList);
         mainPage.newsFeedTitle.check(matches(isDisplayed()));
     }
 

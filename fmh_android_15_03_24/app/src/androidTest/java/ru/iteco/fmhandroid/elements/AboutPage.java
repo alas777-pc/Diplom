@@ -20,6 +20,7 @@ public class AboutPage {
     public ViewInteraction getVersionText;
     public ViewInteraction getTextPrivacyPolicyLink;
     public ViewInteraction getTextTermsOfUseLink;
+    public int versionTitle;
 
     public AboutPage() {
         getVersionText = onView(allOf(withId(R.id.about_version_title_text_view),
@@ -35,6 +36,8 @@ public class AboutPage {
         getTextTermsOfUseLink = onView(
                 allOf(withId(R.id.about_terms_of_use_value_text_view), withText("https://vhospice.org/#/terms-of-use"),
                         withParent(withParent(IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class)))));
+
+        versionTitle = R.id.about_version_title_text_view;
 
 
     }

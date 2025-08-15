@@ -8,19 +8,19 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 
 
+import static ru.iteco.fmhandroid.data.WaitId.waitUntilElement;
+
 import io.qameta.allure.kotlin.Allure;
-import ru.iteco.fmhandroid.R;
 import ru.iteco.fmhandroid.data.DataHelper;
-import ru.iteco.fmhandroid.data.WaitId;
 import ru.iteco.fmhandroid.elements.AuthorizationPage;
 
 public class AuthorizationSteps extends DataHelper {
     AuthorizationPage authorizationPage = new AuthorizationPage();
-    WaitId waitId = new WaitId();
+
 
     public void loginFieldInput(String input) {
         Allure.step("Заполнение поля логина");
-        waitId.waitUntilElement(R.id.login_text_input_layout);
+        waitUntilElement(authorizationPage.loginLayout);
         authorizationPage.loginFieldAsTextField.perform(click());
         authorizationPage.loginFieldAsTextField.perform(replaceText(input), closeSoftKeyboard());
         authorizationPage.loginField.check(matches(isDisplayed()));
@@ -44,7 +44,7 @@ public class AuthorizationSteps extends DataHelper {
 
     public void checkAuthorizationPage() {
         Allure.step("Проверка отображения заголовка 'Authorization'");
-        waitId.waitUntilElement("Authorization");
+        waitUntilElement("Authorization");
         authorizationPage.AuthorizationText.check(matches(isDisplayed()));
     }
 

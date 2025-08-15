@@ -1,69 +1,85 @@
 package ru.iteco.fmhandroid.steps;
 
+import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 
-import static ru.iteco.fmhandroid.elements.NewsPage.CPNewsCardTitle;
 
-import static ru.iteco.fmhandroid.elements.NewsPage.NewCPTitleNews;
+import static ru.iteco.fmhandroid.data.WaitId.waitUntilElement;
 
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
+
+import androidx.test.espresso.ViewInteraction;
+import androidx.test.espresso.matcher.RootMatchers;
+
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
 
 import io.qameta.allure.kotlin.Allure;
-import ru.iteco.fmhandroid.R;
 import ru.iteco.fmhandroid.data.DataHelper;
-import ru.iteco.fmhandroid.data.WaitId;
+import ru.iteco.fmhandroid.elements.AppBarPage;
 import ru.iteco.fmhandroid.elements.NewsPage;
 
 public class NewsStep extends DataHelper {
     NewsPage newsPage = new NewsPage();
-    WaitId waitId = new WaitId();
+    AppBarPage appBarPage = new AppBarPage();
 
     public void checkNewsPageTitle() {
         Allure.step("Проверка отображения заголовка страницы 'News'");
-        waitId.waitUntilElement(R.id.container_list_news_include);
+        waitUntilElement(newsPage.containerInclude);
         newsPage.NewsPageTitle.check(matches(withText("News")));
     }
 
 
     public void selectCategoryFiler(String category) {
         Allure.step("Выбор категории из выпадающего списка");
-        waitId.waitUntilElement(R.id.news_item_category_text_auto_complete_text_view);
+        waitUntilElement(newsPage.newsCategoty);
         newsPage.OpenCategoryList.perform(click(), closeSoftKeyboard());
-        waitId.waitUntilElement(R.id.news_item_category_text_auto_complete_text_view);
-        newsPage.SelectCategoryFromList(category);
+        waitUntilElement(newsPage.newsCategoty);
+        onView(withText(category))
+                .inRoot(RootMatchers
+                        .isPlatformPopup())
+                .perform(click());
     }
 
 
     public void openControlPanelSection() {
         Allure.step("Открытие раздела 'Control panel'");
-        waitId.waitUntilElement(R.id.edit_news_material_button);
+        waitUntilElement(newsPage.newsMaterialButton);
         newsPage.ControlPanel.perform(click());
     }
 
 
     public void checkControlPanelSectionTitle(String title) {
         Allure.step("Проверка открытия раздела 'Control panel'");
-        waitId.waitUntilElement(title);
+        waitUntilElement(title);
         newsPage.ControlPanelTitle.check(matches(withText(title)));
     }
 
 
     public void checkCPNewsCard() {
         Allure.step("Проверка наличия карточек новостей в разделе 'Control panel'");
-        waitId.waitUntilElement(R.id.news_item_material_card_view);
+        waitUntilElement(newsPage.newsMaterialCard);
         newsPage.CPNewsCard.check(matches(isDisplayed()));
     }
 
 
     public void CPDeleteNews() {
         Allure.step("Удаление новости");
-        waitId.waitUntilElement(R.id.delete_news_item_image_view);
+        waitUntilElement(newsPage.deleteNews);
         CPNewsCardTitle();
         newsPage.CPDeleteBtn.perform(click());
         newsPage.CPDialogWindow.check(matches(isDisplayed()));
@@ -85,7 +101,7 @@ public class NewsStep extends DataHelper {
 
     public void checkEditingSectionTitle() {
         Allure.step("Проверка открытия раздела 'Editing News'");
-        waitId.waitUntilElement(R.id.custom_app_bar_title_text_view);
+        waitUntilElement(appBarPage.appBarTitle);
         newsPage.EditingSectionTitle.check(matches(isDisplayed()));
     }
 
@@ -119,16 +135,16 @@ public class NewsStep extends DataHelper {
 
     public void DiscriptionSet(String text) {
         Allure.step("Изменение описания");
-        waitId.waitUntilElement(R.id.news_item_description_text_input_edit_text);
+        waitUntilElement(newsPage.newsItemDescription);
         newsPage.DiscriptionFieldEN.perform(replaceText(text));
     }
 
 
     public void checkDiscription(String text) {
         Allure.step("Проверка открытия описания");
-        waitId.waitUntilElement(R.id.news_list_recycler_view);
+        waitUntilElement(newsPage.newsListRecycler);
         newsPage.openDiscription.perform(click());
-        waitId.waitUntilElement(R.id.news_item_description_text_view);
+        waitUntilElement(newsPage.newsItemDescriptionText);
         newsPage.DiscriptionEN.check(matches(withText(text)));
     }
 
@@ -141,16 +157,72 @@ public class NewsStep extends DataHelper {
 
     public void openCreatingNews() {
         Allure.step("Открытие раздела 'Creating news'");
-        waitId.waitUntilElement(R.id.add_news_image_view);
+        waitUntilElement(newsPage.addNewsImage);
         newsPage.CreatingNewsBtn.perform(click());
     }
 
 
     public void checkNewCreatingNewsTitle(String text) {
         Allure.step("Заголовок раздела 'Creating news'");
-        waitId.waitUntilElement(R.id.news_item_title_text_view);
-        NewCPTitleNews(text);
+        waitUntilElement(newsPage.newsItemTitle);
+        onView(allOf(
+                (withId(newsPage.newsItemTitle)), withText(text))).check(matches(withText(text)));
     }
+
+
+
+    public String CPNewsCardTitle() {
+        String firstCardTitle = onView(first(
+                allOf(withId(newsPage.newsItemTitle),
+                        withParent(withParent(withId(newsPage.newsMaterialCard)))))).toString();
+        return firstCardTitle;
+    }
+
+
+
+
+    public static Matcher<View> childAtPosition(
+            final Matcher<View> parentMatcher, final int position) {
+
+        return new TypeSafeMatcher<View>() {
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("Child at position " + position + " in parent ");
+                parentMatcher.describeTo(description);
+            }
+
+            @Override
+            public boolean matchesSafely(View view) {
+                ViewParent parent = view.getParent();
+                return parent instanceof ViewGroup && parentMatcher.matches(parent)
+                        && view.equals(((ViewGroup) parent).getChildAt(position));
+            }
+
+
+        };
+    }
+
+
+    public static <T> Matcher<T> first(final Matcher<T> matcher) {
+        return new BaseMatcher<T>() {
+            boolean isFirst = true;
+
+            @Override
+            public boolean matches(final Object item) {
+                if (isFirst && matcher.matches(item)) {
+                    isFirst = false;
+                    return true;
+                }
+                return false;
+            }
+
+            @Override
+            public void describeTo(final Description description) {
+                description.appendText("should return first matching item");
+            }
+        };
+    }
+
 
 
 }
